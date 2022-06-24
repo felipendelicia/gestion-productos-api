@@ -22,7 +22,7 @@ app.use(cors())
 // App routes
 
 app.get('/', (req, res)=>[
-    res.send({'message':'hello world'})
+    res.send('hello world')
 ])
 
 // Export App
