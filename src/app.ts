@@ -21,6 +21,10 @@ app.use(cors())
 
 // App routes
 
+app.get('/', (req, res)=>[
+    res.send({'message':'hello world'})
+])
+
 // Export App
 
 export default app
