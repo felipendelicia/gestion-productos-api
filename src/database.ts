@@ -11,7 +11,7 @@ const connectDB = () => {
     
     conn.connect((err)=>{
         if (err) throw err
-        console.log(colors.info('[database]: connected the DB successfully!'))
+        console.log(colors.info('[database]: connected the DB successfully'))
     })
     
 }
