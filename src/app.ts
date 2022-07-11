@@ -3,6 +3,7 @@
 import express from "express"
 import morgan from "morgan"
 import cors from "cors"
+import config from "./config/config"
 
 // Import Routes 
 
@@ -12,7 +13,7 @@ const app = express()
 
 // App settings
 
-app.set("port", 3100)
+app.set("port", config.PORT)
 
 // App middlewares
 
@@ -21,9 +22,6 @@ app.use(cors())
 
 // App routes
 
-app.get('/', (req, res)=>[
-    res.send('hello world')
-])
 
 // Export App
 
