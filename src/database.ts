@@ -1,9 +1,10 @@
 import mysql from 'mysql'
+import config from './config/config'
 
 const conn = mysql.createConnection({
-    host:'localhost',
-    user:'monty',
-    password:'some_pass'
+    host:config.DB_HOST,
+    user:config.DB_USER,
+    password:config.DB_PASS
 })
 
 conn.connect((err)=>{
