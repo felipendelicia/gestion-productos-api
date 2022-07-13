@@ -7,6 +7,8 @@ import config from "./config/config"
 
 // Import Routes 
 
+import login_router from "./routes/login.routes"
+
 // Init app with express
 
 const app = express()
@@ -21,6 +23,8 @@ app.use(morgan("dev"))
 app.use(cors())
 
 // App routes
+
+app.use(login_router)
 
 
 // Export App

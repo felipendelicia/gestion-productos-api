@@ -1,19 +1,18 @@
-import mysql from 'mysql'
+import {createConnection} from 'mysql'
 import config from './config/config'
-import colors from './config/colors'
 
-const connectDB = () => {
-    const conn = mysql.createConnection({
-        host:config.DB_HOST,
-        user:config.DB_USER,
-        password:config.DB_PASS
-    })
+export async function connectDB(){
+    try{
+        const connection = await createConnection({
+            host:config.HOST,
+            user:config.DB_USER,
+            password:config.DB_PASS,
+            database:config.DATABASE
+        })
     
-    conn.connect((err)=>{
-        if (err) throw err
-        console.log(colors.info('[database]: connected the DB successfully'))
-    })
-    
+        return connection; 
+    }
+    catch(err){
+        console.error(err)
+    }
 }
-
-export default connectDB
