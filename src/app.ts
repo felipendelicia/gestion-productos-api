@@ -1,6 +1,6 @@
 // Import modules
 
-import express from "express"
+import express, {urlencoded, json} from "express"
 import morgan from "morgan"
 import cors from "cors"
 import config from "./config/config"
@@ -21,6 +21,8 @@ app.set("port", config.PORT)
 
 app.use(morgan("dev"))
 app.use(cors())
+app.use(urlencoded({extended:false}))
+app.use(json())
 
 // App routes
 

@@ -5,12 +5,12 @@ const login_router = Router();
 // LOGIN
 login_router.post("/login", async (req: Request, res: Response) => {
   try {
-
     const conn = await connectDB();
     await conn!.connect();
 
-    const email = req.body.email
-    const password = req.body.password
+    const { email, password } = req.body;
+
+    console.log(req.body)
 
     if (!(email && password)) {
       res.status(400).send("Todas las entradas son requeridas!");
@@ -22,13 +22,8 @@ login_router.post("/login", async (req: Request, res: Response) => {
     });
 
     await conn!.end();
-
-  }
-
-  catch (err) {
-
+  } catch (err) {
     console.log(err);
-    
   }
 });
 
