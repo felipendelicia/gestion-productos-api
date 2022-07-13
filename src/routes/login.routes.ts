@@ -10,16 +10,20 @@ login_router.post("/login", async (req: Request, res: Response) => {
 
     const { email, password } = req.body;
 
-    console.log(req.body)
+    console.log(req.body);
 
     if (!(email && password)) {
       res.status(400).send("Todas las entradas son requeridas!");
     }
 
-    await conn!.query("SELECT * from companies;", (error, results) => {
-      if (error) throw error;
-      console.log(results);
-    });
+    await conn!.query(
+      `SELECT * FROM accounts WHERE email= ?;`, [email],
+      (error, results) => {
+        if (error) throw error;
+        console.log(results);
+        res.send(results)
+      }
+    );
 
     await conn!.end();
   } catch (err) {
