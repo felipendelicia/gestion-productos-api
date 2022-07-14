@@ -1,13 +1,12 @@
 import { Response, Request } from "express";
 import { connectDB } from "../database";
 import { RowDataPacket } from "mysql2";
+import colors from "../config/colors";
 import config from "../config/config";
 import jwt from "jsonwebtoken";
 
 export async function login(req: Request, res: Response) {
   try {
-
-    console.log(req.body)
     // Connecting the db
     const conn = await connectDB();
 
@@ -28,7 +27,6 @@ export async function login(req: Request, res: Response) {
     const user = mysql_response[0][0];
 
     if (user === undefined) { res.status(404).send('Usuario no encontrado') }
-    console.log(user)
 
     if (user && password == user.password) {
       // Create token
@@ -36,9 +34,13 @@ export async function login(req: Request, res: Response) {
         expiresIn: "2h",
       });
 
+      // adding token to the object
       user.token = token
+
+      // console.log the login event
+      console.log(colors.help(`[server]: ${user.user} loggued in`))
       
-      // user
+      // sending user with token
       res.status(200).json(user);
     }
 
