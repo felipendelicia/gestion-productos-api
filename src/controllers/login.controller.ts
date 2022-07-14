@@ -5,6 +5,8 @@ import config from "../config/config";
 import jwt from "jsonwebtoken";
 
 export async function login(req: Request, res: Response) {
+
+  // Connecting the db
   const conn = await connectDB();
 
   // Get user input
@@ -25,13 +27,9 @@ export async function login(req: Request, res: Response) {
 
   if (user && password == user.password) {
     // Create token
-    const token = jwt.sign({ userId: user.id, email }, config.TOKEN_KEY!, {
-      expiresIn: "2h",
-    });
-    // save user token
-    user.token = token;
+    const token = jwt.sign({ id: user.id }, config.TOKEN_KEY!, {expiresIn: "2h"});
     // user
-    res.status(200).json(user);
+    res.header('token', token).status(200).json(user);
   } else {
     res.status(400).send("Credenciales invalidas");
   }
