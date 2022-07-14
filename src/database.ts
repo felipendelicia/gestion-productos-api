@@ -1,13 +1,14 @@
-import {createConnection} from 'mysql'
+import { createPool } from 'mysql2/promise';
 import config from './config/config'
 
 export async function connectDB(){
     try{
-        const connection = await createConnection({
+        const connection = await createPool({
             host:config.HOST,
             user:config.DB_USER,
             password:config.DB_PASS,
-            database:config.DATABASE
+            database:config.DATABASE,
+            connectionLimit: 10
         })
     
         return connection; 

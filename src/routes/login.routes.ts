@@ -1,34 +1,9 @@
-import { Router, Request, Response } from "express";
-import { connectDB } from "../database";
+import { Router } from "express";
+import { login } from "../controllers/login.controller";
 const login_router = Router();
 
 // LOGIN
-login_router.post("/login", async (req: Request, res: Response) => {
-  try {
-    const conn = await connectDB();
-    await conn!.connect();
-
-    const { email, password } = req.body;
-
-    console.log(req.body);
-
-    if (!(email && password)) {
-      res.status(400).send("Todas las entradas son requeridas!");
-    }
-
-    await conn!.query(
-      `SELECT * FROM accounts WHERE email= ?;`, [email],
-      (error, results) => {
-        if (error) throw error;
-        console.log(results);
-        res.send(results)
-      }
-    );
-
-    await conn!.end();
-  } catch (err) {
-    console.log(err);
-  }
-});
+login_router
+  .post("/login", login);
 
 export default login_router;
