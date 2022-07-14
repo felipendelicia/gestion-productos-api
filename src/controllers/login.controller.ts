@@ -1,24 +1,38 @@
 import { Response, Request } from "express";
 import { connectDB } from "../database";
+import { RowDataPacket } from "mysql2";
+import config from "../config/config";
+import jwt from "jsonwebtoken";
 
 export async function login(req: Request, res: Response) {
-  try {
-    const conn = await connectDB();
+  const conn = await connectDB();
 
-    const { email, password } = req.body;
+  // Get user input
+  const { email, password } = req.body;
 
-    if (!(email && password)) {
-      res.status(400).send("Todas las entradas son requeridas!");
-    }
+  // Validate user input
+  if (!(email && password)) {
+    res.status(400).send("Todas las entradas son requeridas.");
+  }
 
-    const user = await conn!.query(
-      `SELECT * FROM accounts WHERE email=?;`,
-      [email]
-    );
+  // Validate if user exist in our database
+  const mysql_response = await conn.query<RowDataPacket[]>(
+    `SELECT * FROM accounts WHERE email = ? ;`,
+    [email]
+  );
 
-    res.send(user[0])
+  const user = mysql_response[0][0];
 
-  } catch (err) {
-    console.log(err);
+  if (user && password == user.password) {
+    // Create token
+    const token = jwt.sign({ userId: user.id, email }, config.TOKEN_KEY!, {
+      expiresIn: "2h",
+    });
+    // save user token
+    user.token = token;
+    // user
+    res.status(200).json(user);
+  } else {
+    res.status(400).send("Credenciales invalidas");
   }
 }

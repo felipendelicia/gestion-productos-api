@@ -4,6 +4,6 @@ const login_router = Router();
 
 // LOGIN
 login_router
-  .post("/login", login);
+  .post("/", login);
 
 export default login_router;
