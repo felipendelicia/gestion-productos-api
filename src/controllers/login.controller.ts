@@ -12,10 +12,11 @@ export async function login(req: Request, res: Response) {
     }
 
     const user = await conn!.query(
-      `SELECT * FROM accounts WHERE email='fernandodelicia@gmail.com';`
+      `SELECT * FROM accounts WHERE email=?;`,
+      [email]
     );
 
-    res.send(user)
+    res.send(user[0])
 
   } catch (err) {
     console.log(err);
