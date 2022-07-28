@@ -15,7 +15,7 @@ export async function login(req: Request, res: Response) {
 
     // Validate user input
     if (!(email && password)) {
-      res.status(400).send("Todas las entradas son requeridas.");
+      res.status(400).json({res:"Todas las entradas son requeridas."});
     }
 
     // Validate if user exist in our database
@@ -24,9 +24,8 @@ export async function login(req: Request, res: Response) {
       [email]
     );
 
+    // User constant
     const user = mysql_response[0][0];
-
-    if (user === undefined) { res.status(404).send('Usuario no encontrado') }
 
     if (user && password == user.password) {
       // Create token
@@ -35,18 +34,15 @@ export async function login(req: Request, res: Response) {
       });
 
       // adding token to the object
-      user.token = token
+      user.token = token;
 
       // console.log the login event
-      console.log(colors.help(`[server]: ${user.user} loggued in`))
-      
+      console.log(colors.help(`[server]: ${user.user} loggued in`));
+
       // sending user with token
       res.status(200).json(user);
-    }
-
+    } else res.status(404).json({res:"Credenciales invalidas"});
   } catch (err) {
-
     console.error(err);
-
   }
 }

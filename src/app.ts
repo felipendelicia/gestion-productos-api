@@ -28,7 +28,7 @@ app.use(json())
 // App routes
 
 app.use('/login', login_router)
-app.use(clients_router)
+app.use('/clients', clients_router)
 
 
 // Export App
